@@ -4,9 +4,30 @@ import {useState, useEffect} from 'react'
 import axios from 'axios'
 
 const App = () => {
+  const [newItemName, setNewItemName] = useState('')
+  const [newType, setNewType] = useState('')
+  const [newPersonBringing, setNewPersonBringing] = useState('')
+
+  const [food, setFood] = useState([])
+
+  useEffect(() => {
+    axios.get('https://project3backend12.herokuapp.com/').then((response) => {
+      setFood(response.data)
+      console.log(response.data[0].type)
+    })
+  }, [])
+
   return (
     <>
-      <h1> TEST </h1>
+      {food.map((food) => {
+        return (
+          <>
+          <p>{food.itemName}</p>
+          <p>{food.type}</p>
+          <p>{food.personBringing}</p>
+          </>
+        )
+      })}
     </>
   )
 }
