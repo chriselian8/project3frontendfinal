@@ -12,7 +12,7 @@ const App = () => {
   const [food, setFood] = useState([])
 
   useEffect(() => {
-    axios.get('https://project3backend12.herokuapp.com/potluck').then((response) => {
+    axios.get('https://project3backend12.herokuapp.com').then((response) => {
       setFood(response.data)
       console.log(response.data[0].type)
     })
@@ -27,14 +27,34 @@ const App = () => {
   const handleViewEditItems = () => {
     setView('edit')
   }
+  const handlePotLuckSubmit = (event) => {
+    event.preventDefault()
+    axios.post('https://project3backend12.herokuapp.com/',
+      {
+        itemName: newItemName,
+        type: newType,
+        personBringing: newPersonBringing
+    }).then(() => {
+      axios.get('https://project3backend12.herokuapp.com').then((response) => {
+        setFood(response.data)
+      })
+    })
+  }
+  const handlePotLuckDelete = (potLuckData) => {
+    axios.delete(`https://project3backend12.herokuapp.com/${potLuckData._id}`).then(() => {
+      axios.get('https://project3backend12.herokuapp.com').then((response) => {
+        setFood(response.data)
+      })
+    })
+  }
   const handlePotLuckUpdate = (event, potLuckData) => {
     event.preventDefault()
-    axios.put(`https://project3backend12.herokuapp.com/potluck/${potLuckData._id}`, {
+    axios.put(`https://project3backend12.herokuapp.com/${potLuckData._id}`, {
       itemName: newItemName,
       type: newType,
       personBringing: newPersonBringing
     }).then(() => {
-      axios.get('https://project3backend12.herokuapp.com/potluck').then((response) => {
+      axios.get('https://project3backend12.herokuapp.com').then((response) => {
         setFood(response.data)
       })
     })
