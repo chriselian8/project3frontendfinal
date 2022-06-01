@@ -118,6 +118,7 @@ const App = () => {
                 Edit Food: <input type='text' name='name' placeholder={food.name} onChange={handleName}/><br/>
                 Edit Person Bringing: <input type='text' name='personBringing' placeholder={food.personBringing} onChange={handlePersonBringing}/><br/>
                 Edit Beverage Status: <input type='text' name='beverage' placeholder={food.beverage} onChange={handleBeverage}/><br/>
+                <input type='submit' value='Save Changes'/>
               </form>
               <button onClick={(event) => {
                 handlePotLuckDelete(food)
