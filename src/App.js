@@ -30,6 +30,15 @@ const App = () => {
   const handleViewEditItems = () => {
     setView('edit')
   }
+  const handleName = () => {
+    setNewFoodName(event.target.value)
+  }
+  const handlePersonBringing = () => {
+    setNewPersonBringing(event.target.value)
+  }
+  const handleBeverage = () => {
+    setNewBev(event.target.value)
+  }
   const handlePotLuckSubmit = (event) => {
     event.preventDefault()
     axios.post('https://project3backend12.herokuapp.com/food',
@@ -93,7 +102,11 @@ const App = () => {
             <div className = 'card'>
               <p>{food.name}</p>
               <p>{food.personBringing}</p>
-              <p>{food.beverage}</p>
+              <div>
+                {
+                  food.beverage ? <p>Bringing a beverage!</p> : <p>Not bringing a beverage</p>
+                }
+              </div>
             </div>
             </div>
             </>
@@ -101,7 +114,14 @@ const App = () => {
           return (
             <>
             <div>
-              <h1> edit </h1>
+              <form onSubmit={(event) => {handlePotLuckUpdate(event, food)}}>
+                Edit Food: <input type='text' name='name' placeholder={food.name} onChange={handleName}/><br/>
+                Edit Person Bringing: <input type='text' name='personBringing' placeholder={food.personBringing} onChange={handlePersonBringing}/><br/>
+                Edit Beverage Status: <input type='text' name='beverage' placeholder={food.beverage} onChange={handleBeverage}/><br/>
+              </form>
+              <button onClick={(event) => {
+                handlePotLuckDelete(food)
+              }}>Delete card</button>
             </div>
             </>
           )
