@@ -24,15 +24,15 @@ const App = () => {
 
   const handleViewHome = () => {
     setView('index')
+    setEditor('none')
   }
   const handleViewShowItems = () => {
     setView('show')
-  }
-  const handleViewEditItems = () => {
-    setView('edit')
+    setEditor('none')
   }
   const handleViewAddItems = () => {
     setView('add')
+    setEditor('none')
   }
   const handleEditor = () => {
     setEditor('show')
