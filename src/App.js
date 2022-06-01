@@ -11,7 +11,7 @@ const App = () => {
   const [food, setFood] = useState([])
 
   useEffect(() => {
-    axios.get('https://project3backend12.herokuapp.com/').then((response) => {
+    axios.get('https://project3backend12.herokuapp.com/food').then((response) => {
       setFood(response.data)
       console.log(response.data[0].type)
     })
@@ -22,8 +22,8 @@ const App = () => {
       {food.map((food) => {
         return (
           <>
-          <p>{food.itemName}</p>
-          <p>{food.type}</p>
+          <p>{food.name}</p>
+          <p>{food.beverage}</p>
           <p>{food.personBringing}</p>
           </>
         )
