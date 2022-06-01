@@ -3,18 +3,21 @@ import './App.css';
 import {useState, useEffect} from 'react'
 import axios from 'axios'
 
+
 const App = () => {
   //Making a usestate for the 'page' we're viewing. the return statement will have a bunch of if/else ifs that will determine what page we're on. when a button is clicked, it will set this usestate to something such as 'index', or 'show', for example.
   const [view, setView] = useState('index')
-  const [newItemName, setNewItemName] = useState('')
-  const [newType, setNewType] = useState('')
+  const [newFoodName, setNewFoodName] = useState('')
+  const [newBev, setNewBev] = useState('')
   const [newPersonBringing, setNewPersonBringing] = useState('')
+  const [query, setQuery] = useState('')
+
   const [food, setFood] = useState([])
 
   useEffect(() => {
     axios.get('https://project3backend12.herokuapp.com/food').then((response) => {
       setFood(response.data)
-      console.log(response.data[0].type)
+      console.log(response.data[0].beverage)
     })
   }, [])
 
@@ -29,20 +32,20 @@ const App = () => {
   }
   const handlePotLuckSubmit = (event) => {
     event.preventDefault()
-    axios.post('https://project3backend12.herokuapp.com/',
+    axios.post('https://project3backend12.herokuapp.com/food',
       {
-        itemName: newItemName,
-        type: newType,
+        name: newFoodName,
+        beverage: newBev,
         personBringing: newPersonBringing
     }).then(() => {
-      axios.get('https://project3backend12.herokuapp.com').then((response) => {
+      axios.get('https://project3backend12.herokuapp.com/food').then((response) => {
         setFood(response.data)
       })
     })
   }
   const handlePotLuckDelete = (potLuckData) => {
-    axios.delete(`https://project3backend12.herokuapp.com/${potLuckData._id}`).then(() => {
-      axios.get('https://project3backend12.herokuapp.com').then((response) => {
+    axios.delete(`https://project3backend12.herokuapp.com/food/${potLuckData._id}`).then(() => {
+      axios.get('https://project3backend12.herokuapp.com/food').then((response) => {
         setFood(response.data)
       })
     })
@@ -50,8 +53,8 @@ const App = () => {
   const handlePotLuckUpdate = (event, potLuckData) => {
     event.preventDefault()
     axios.put(`https://project3backend12.herokuapp.com/${potLuckData._id}`, {
-      itemName: newItemName,
-      type: newType,
+      name: newFoodName,
+      beverage: newBev,
       personBringing: newPersonBringing
     }).then(() => {
       axios.get('https://project3backend12.herokuapp.com').then((response) => {
@@ -68,9 +71,16 @@ const App = () => {
           <button onClick={handleViewHome}>Home</button>
           <button onClick={handleViewShowItems}>Show Potluck</button>
           <button onClick={handleViewEditItems}>Edit Potluck</button>
+        <input placeholder = 'Search by Person Bringing' onChange = {(event) => {setQuery(event.target.value)}}/>
         </nav>
       </header>
-      {food.map((food) => {
+      {food.filter(food => {
+        if (query === ''){
+          return food
+        } else if (food.personBringing.toLowerCase().includes(query.toLowerCase())){
+          return food
+        }
+      }).map((food) => {
         if (view === 'index') {
           return (
             <div>
@@ -78,16 +88,22 @@ const App = () => {
             </div>
         )} else if (view === 'show') {
           return (
-            <div>
+            <>
+            <div className = 'container'>
+            <div className = 'card'>
               <p>{food.name}</p>
-              <p>{food.beverage}</p>
               <p>{food.personBringing}</p>
+              <p>{food.beverage}</p>
             </div>
+            </div>
+            </>
         )} else if (view === 'edit') {
           return (
+            <>
             <div>
               <h1> edit </h1>
             </div>
+            </>
           )
         }
       })}
