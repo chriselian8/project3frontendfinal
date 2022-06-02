@@ -30,6 +30,16 @@ const App = () => {
   const handleViewEditItems = () => {
     setView('edit')
   }
+
+  const handleName = () => {
+  setNewFoodName(window.event.target.value)
+}
+const handlePersonBringing = () => {
+  setNewPersonBringing(window.event.target.value)
+}
+const handleBeverage = () => {
+  setNewBev(window.event.target.checked)
+}
   const handlePotLuckSubmit = (event) => {
     event.preventDefault()
     axios.post('https://project3backend12.herokuapp.com/food',
@@ -52,25 +62,26 @@ const App = () => {
   }
   const handlePotLuckUpdate = (event, potLuckData) => {
     event.preventDefault()
-    axios.put(`https://project3backend12.herokuapp.com/${potLuckData._id}`, {
+    axios.put(`https://project3backend12.herokuapp.com/food/${potLuckData._id}`, {
       name: newFoodName,
       beverage: newBev,
       personBringing: newPersonBringing
     }).then(() => {
-      axios.get('https://project3backend12.herokuapp.com').then((response) => {
+      axios.get('https://project3backend12.herokuapp.com/food').then((response) => {
         setFood(response.data)
       })
+    }).then(() => {
+      handleViewShowItems()
     })
   }
 
   return (
     <>
       <header>
-        <h1> PotLuck </h1>
+        <h1>PotLuck</h1>
         <nav>
           <button onClick={handleViewHome}>Home</button>
           <button onClick={handleViewShowItems}>Show Potluck</button>
-          <button onClick={handleViewEditItems}>Edit Potluck</button>
         <input placeholder = 'Search by Person Bringing' onChange = {(event) => {setQuery(event.target.value)}}/>
         </nav>
       </header>
@@ -81,30 +92,33 @@ const App = () => {
           return food
         }
       }).map((food) => {
-        if (view === 'index') {
-          return (
-            <div>
-              <p>Welcome to the Potluck!</p>
-            </div>
-        )} else if (view === 'show') {
+        if (view === 'show') {
           return (
             <>
             <div className = 'container'>
             <div className = 'card'>
-              <p>{food.name}</p>
+              <h3>{food.name}</h3>
               <p>{food.personBringing}</p>
-              <p>{food.beverage}</p>
+              {food.beverage ? <p>This is a beverage</p> : <p>This is not a beverage</p>}
+              <button onClick={handleViewEditItems}>Edit Potluck</button>
             </div>
             </div>
             </>
         )} else if (view === 'edit') {
           return (
             <>
-            <div>
-              <h1> edit </h1>
+            <div className = 'container'>
+            <div className = 'card'>
+              <form onSubmit={(event) => {handlePotLuckUpdate(event, food)}}>
+                Edit Food: <input type='text' name='name' placeholder={food.name} onChange={handleName}/><br/>
+                Edit Person Bringing: <input type='text' name='personBringing' placeholder={food.personBringing} onChange={handlePersonBringing}/><br/>
+                Edit Beverage Status: <input type='checkbox' name='beverage' onChange={handleBeverage}/><br/>
+                <input type='submit' value='Save Changes'/>
+              </form>
+            </div>
             </div>
             </>
-          )
+        )
         }
       })}
     </>
