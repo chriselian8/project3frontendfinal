@@ -8,17 +8,30 @@ const App = () => {
   //Making a usestate for the 'page' we're viewing. the return statement will have a bunch of if/else ifs that will determine what page we're on. when a button is clicked, it will set this usestate to something such as 'index', or 'show', for example.
   const [view, setView] = useState('index')
   const [editor, setEditor] = useState('none')
+  const [query, setQuery] = useState('')
+
   const [newFoodName, setNewFoodName] = useState('')
   const [newBev, setNewBev] = useState('')
   const [newPersonBringing, setNewPersonBringing] = useState('')
-  const [query, setQuery] = useState('')
 
   const [food, setFood] = useState([])
+
+  const [newItemName, setNewItemName] = useState('')
+  const [newItemPersonBringing, setNewItemPersonBringing] = useState('')
+  const [newItemQuantity, setNewItemQuantity] = useState('')
+
+  const [item, setItem] = useState([])
 
   useEffect(() => {
     axios.get('https://project3backend12.herokuapp.com/food').then((response) => {
       setFood(response.data)
-      console.log(response.data[0].beverage)
+      console.log(response.data[0].name)
+    })
+  }, [])
+
+  useEffect(() => {
+    axios.get('https://project3backend12.herokuapp.com/item').then((response) => {
+      setItem(response.data)
     })
   }, [])
 
@@ -46,6 +59,8 @@ const App = () => {
   const handleBeverage = () => {
     setNewBev(window.event.target.checked)
   }
+
+
   const handlePotLuckSubmit = (event) => {
     event.preventDefault()
     axios.post('https://project3backend12.herokuapp.com/food',
@@ -103,9 +118,6 @@ const App = () => {
       if (view === 'index') {
         return (
           <>
-            <div>
-              <h1> welcome to potluck!</h1>
-            </div>
           </>
         )
       }
@@ -120,6 +132,7 @@ const App = () => {
         if (view === 'show') {
           return (
             <>
+            <h2>Consumables</h2>
             <div className = 'container'>
             <div className = 'card'>
               <p>{food.name}</p>
@@ -132,6 +145,26 @@ const App = () => {
               <button onClick={handleEditor}>Edit Item</button>
             </div>
             </div>
+            {item.filter(item => {
+              if (query === ''){
+                return item
+              } else if (item.personBringing.toLowerCase().includes(query.toLowerCase())){
+                return item
+              }
+            }).map((item) => {
+            return (
+              <>
+            <h2>Implements</h2>
+            <div className = 'container'>
+            <div className = 'card'>
+            <p>{item.name}</p>
+            <p>{item.personBringing}</p>
+            <p>{item.quantity}</p>
+            </div>
+            </div>
+            </>
+          )
+          })}
             {(() => {
               if (editor === 'show') {
                 return (
