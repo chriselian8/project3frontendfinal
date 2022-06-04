@@ -117,7 +117,7 @@ const App = () => {
         return (
           <>
             <div>
-              <h1> welcome to potluck!</h1>
+              <h1>Welcome to the potluck!</h1>
             </div>
           </>
         )
@@ -165,7 +165,13 @@ const App = () => {
             </>
         )}
       })}
-      {item.map((item) => {
+      {item.filter(item => {
+        if (query === ''){
+          return item
+        } else if (item.personBringing.toLowerCase().includes(query.toLowerCase())){
+          return item
+        }
+      }).map((item) => {
         if (view === 'show'){
         return (
           <div className = 'container'>
