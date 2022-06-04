@@ -145,13 +145,7 @@ const App = () => {
               <button onClick={handleEditor}>Edit Item</button>
             </div>
             </div>
-            {item.filter(item => {
-              if (query === ''){
-                return item
-              } else if (item.personBringing.toLowerCase().includes(query.toLowerCase())){
-                return item
-              }
-            }).map((item) => {
+            {item.map((item) => {
             return (
               <>
             <h2>Implements</h2>
@@ -164,10 +158,13 @@ const App = () => {
             </div>
             </>
           )
-          })}
+        })
+        })}
+
             {(() => {
               if (editor === 'show') {
                 return (
+                  <>
             <div>
               <form onSubmit={(event) => {handlePotLuckUpdate(event, food)}}>
                 Edit Food: <input type='text' name='name' placeholder={food.name} onChange={handleName}/><br/>
@@ -179,10 +176,10 @@ const App = () => {
                 handlePotLuckDelete(food)
               }}>Delete card</button>
             </div>
+            </>
           )
         }
             })()}
-            </>
         )}
       })}
       {(() => {
@@ -203,6 +200,8 @@ const App = () => {
     })()}
     </>
   )
+}
+}
 }
 
 export default App;
