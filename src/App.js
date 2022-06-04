@@ -123,6 +123,7 @@ const App = () => {
         )
       }
       })()}
+      <h2>Consumables</h2>
       {food.filter(food => {
         if (query === ''){
           return food
@@ -165,6 +166,7 @@ const App = () => {
             </>
         )}
       })}
+        <h2>Implements</h2>
       {item.filter(item => {
         if (query === ''){
           return item
@@ -174,6 +176,7 @@ const App = () => {
       }).map((item) => {
         if (view === 'show'){
         return (
+          <>
           <div className = 'container'>
           <div className = 'card'>
             <p>{item.name}</p>
@@ -181,6 +184,7 @@ const App = () => {
             <button onClick={handleEditor}>Edit Item</button>
           </div>
           </div>
+          </>
       )}
       })}
       {(() => {
