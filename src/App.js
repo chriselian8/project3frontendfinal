@@ -123,7 +123,7 @@ const App = () => {
         )
       }
       })()}
-      <h2>Consumables</h2>
+      {view === 'show' ? <h2>Consumables</h2> : null}
       {food.filter(food => {
         if (query === ''){
           return food
@@ -166,7 +166,7 @@ const App = () => {
             </>
         )}
       })}
-        <h2>Implements</h2>
+        {view === 'show' ? <h2>Implements</h2> : null}
       {item.filter(item => {
         if (query === ''){
           return item
