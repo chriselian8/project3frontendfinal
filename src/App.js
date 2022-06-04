@@ -8,30 +8,30 @@ const App = () => {
   //Making a usestate for the 'page' we're viewing. the return statement will have a bunch of if/else ifs that will determine what page we're on. when a button is clicked, it will set this usestate to something such as 'index', or 'show', for example.
   const [view, setView] = useState('index')
   const [editor, setEditor] = useState('none')
-  const [query, setQuery] = useState('')
 
   const [newFoodName, setNewFoodName] = useState('')
   const [newBev, setNewBev] = useState('')
   const [newPersonBringing, setNewPersonBringing] = useState('')
-
-  const [food, setFood] = useState([])
 
   const [newItemName, setNewItemName] = useState('')
   const [newItemPersonBringing, setNewItemPersonBringing] = useState('')
   const [newItemQuantity, setNewItemQuantity] = useState('')
 
   const [item, setItem] = useState([])
+  const [food, setFood] = useState([])
+  const [query, setQuery] = useState('')
 
   useEffect(() => {
     axios.get('https://project3backend12.herokuapp.com/food').then((response) => {
       setFood(response.data)
-      console.log(response.data[0].name)
+      console.log(response.data[0].beverage)
     })
   }, [])
 
   useEffect(() => {
     axios.get('https://project3backend12.herokuapp.com/item').then((response) => {
-      setItem(response.data)
+      setFood(response.data)
+      console.log(response.data[0].quantity)
     })
   }, [])
 
@@ -59,8 +59,6 @@ const App = () => {
   const handleBeverage = () => {
     setNewBev(window.event.target.checked)
   }
-
-
   const handlePotLuckSubmit = (event) => {
     event.preventDefault()
     axios.post('https://project3backend12.herokuapp.com/food',
@@ -118,6 +116,9 @@ const App = () => {
       if (view === 'index') {
         return (
           <>
+            <div>
+              <h1> welcome to potluck!</h1>
+            </div>
           </>
         )
       }
@@ -132,7 +133,6 @@ const App = () => {
         if (view === 'show') {
           return (
             <>
-            <h2>Consumables</h2>
             <div className = 'container'>
             <div className = 'card'>
               <p>{food.name}</p>
@@ -146,25 +146,12 @@ const App = () => {
             </div>
             </div>
             {item.map((item) => {
-            return (
-              <>
-            <h2>Implements</h2>
-            <div className = 'container'>
-            <div className = 'card'>
-            <p>{item.name}</p>
-            <p>{item.personBringing}</p>
-            <p>{item.quantity}</p>
-            </div>
-            </div>
-            </>
-          )
-        })
-        })}
+              return <p>{item.name}</p>
 
+            })}
             {(() => {
               if (editor === 'show') {
                 return (
-                  <>
             <div>
               <form onSubmit={(event) => {handlePotLuckUpdate(event, food)}}>
                 Edit Food: <input type='text' name='name' placeholder={food.name} onChange={handleName}/><br/>
@@ -176,12 +163,13 @@ const App = () => {
                 handlePotLuckDelete(food)
               }}>Delete card</button>
             </div>
-            </>
           )
         }
             })()}
+            </>
         )}
-      })}
+      }
+    )}
       {(() => {
       if (view === 'add') {
         return (
@@ -200,8 +188,6 @@ const App = () => {
     })()}
     </>
   )
-}
-}
 }
 
 export default App;
