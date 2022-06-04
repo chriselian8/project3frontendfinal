@@ -10,7 +10,7 @@ const App = () => {
   const [editor, setEditor] = useState('none')
 
   const [newFoodName, setNewFoodName] = useState('')
-  const [newBev, setNewBev] = useState('')
+  const [newBev, setNewBev] = useState(false)
   const [newPersonBringing, setNewPersonBringing] = useState('')
 
   const [newItemName, setNewItemName] = useState('')
