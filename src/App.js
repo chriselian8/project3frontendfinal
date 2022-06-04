@@ -24,14 +24,14 @@ const App = () => {
   useEffect(() => {
     axios.get('https://project3backend12.herokuapp.com/food').then((response) => {
       setFood(response.data)
-      console.log(response.data[0].beverage)
+      console.log(response.data[0].name)
     })
   }, [])
 
   useEffect(() => {
     axios.get('https://project3backend12.herokuapp.com/item').then((response) => {
-      setFood(response.data)
-      console.log(response.data[0].quantity)
+      setItem(response.data)
+      console.log(response.data[0].name)
     })
   }, [])
 
@@ -145,10 +145,6 @@ const App = () => {
               <button onClick={handleEditor}>Edit Item</button>
             </div>
             </div>
-            {item.map((item) => {
-              return <p>{item.name}</p>
-
-            })}
             {(() => {
               if (editor === 'show') {
                 return (
@@ -168,8 +164,7 @@ const App = () => {
             })()}
             </>
         )}
-      }
-    )}
+      })}
       {(() => {
       if (view === 'add') {
         return (
