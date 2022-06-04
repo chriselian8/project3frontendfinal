@@ -165,6 +165,18 @@ const App = () => {
             </>
         )}
       })}
+      {item.map((item) => {
+        if (view === 'show'){
+        return (
+          <div className = 'container'>
+          <div className = 'card'>
+            <p>{item.name}</p>
+            <p>{item.personBringing}</p>
+            <button onClick={handleEditor}>Edit Item</button>
+          </div>
+          </div>
+      )}
+      })}
       {(() => {
       if (view === 'add') {
         return (
