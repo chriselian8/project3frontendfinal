@@ -15,7 +15,7 @@ const App = () => {
 
   const [newItemName, setNewItemName] = useState('')
   const [newItemPersonBringing, setNewItemPersonBringing] = useState('')
-  const [newItemQuantity, setNewItemQuantity] = useState('')
+  const [newItemQuantity, setNewItemQuantity] = useState(0)
 
   const [item, setItem] = useState([])
   const [food, setFood] = useState([])
@@ -24,14 +24,12 @@ const App = () => {
   useEffect(() => {
     axios.get('https://project3backend12.herokuapp.com/food').then((response) => {
       setFood(response.data)
-      console.log(response.data[0].name)
     })
   }, [])
 
   useEffect(() => {
     axios.get('https://project3backend12.herokuapp.com/item').then((response) => {
       setItem(response.data)
-      console.log(response.data[0].name)
     })
   }, [])
 
@@ -136,14 +134,11 @@ const App = () => {
             <>
             <div className = 'container'>
             <div className = 'card'>
-              <p>{food.name}</p>
+              <h3>{food.name}</h3>
               <p>{food.personBringing}</p>
-              <div>
-                {
-                  food.beverage ? <p>Bringing a beverage!</p> : <p>Not bringing a beverage</p>
-                }
-              </div>
-              <button onClick={handleEditor}>Edit Item</button>
+              {food.beverage === true ? <p>Drink</p> : null}
+              <button onClick={handleEditor}>Edit</button>
+              <button onClick={(event) => {handlePotLuckDelete(food)}}>Delete</button>
             </div>
             </div>
             {(() => {
@@ -179,7 +174,7 @@ const App = () => {
           <>
           <div className = 'container'>
           <div className = 'card'>
-            <p>{item.name}</p>
+            <h3>{item.name}</h3>
             <p>{item.personBringing}</p>
             <button onClick={handleEditor}>Edit Item</button>
           </div>
