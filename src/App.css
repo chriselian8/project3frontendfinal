@@ -36,3 +36,45 @@
     transform: rotate(360deg);
   }
 }
+
+body {
+  text-align: center;
+  background-color: orange;
+}
+
+button {
+  background-color: brown;
+  padding: 15px;
+  color: white;
+  border-radius: 15px;
+  margin: 20px;
+}
+
+.container {
+  display: inline-flex;
+  justify-content: center;
+}
+
+.card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 20px;
+  max-width: 200px;
+  min-width: 200px;
+  margin: 10px;
+}
+
+.card:hover{
+  opacity: 0.75;
+  background-color: brown;
+  color: white;
+}
+
+input {
+  background-color: white;
+  padding: 15px;
+  color: brown;
+  border-radius: 15px;
+  margin: 20px;
+  width: 40%
+}
