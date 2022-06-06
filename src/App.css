@@ -96,3 +96,30 @@ input {
 .add-consumable-form input {
   text-align: center;
 }
+.edit-item-form {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+.edit-item-form input {
+  text-align: center;
+}
+.edit-consumable-form {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+.edit-consumable-form input {
+  text-align: center;
+}
+.add:hover {
+  cursor: alias;
+  color: green;
+  box-shadow: green 3px 3px 3px;
+}
+.delete:hover {
+  cursor: alias;
+  box-shadow: red 3px 3px 3px;
+}

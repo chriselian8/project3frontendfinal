@@ -212,7 +212,7 @@ const App = () => {
             <div className = 'card'>
               <h3>{food.name}</h3>
               <p>{food.personBringing}</p>
-              {food.beverage === true ? <p>Drink</p> : null}
+              <p>{food.cuisine}</p>
               <button onClick={handleEditor}>Edit Consumable</button>
               <button onClick={(event) => {handlePotLuckDelete(food)}}>Delete Consumable</button>
             </div>
@@ -221,15 +221,15 @@ const App = () => {
               if (editor === 'show') {
                 return (
                   <div>
-                    <form onSubmit={(event) => {handlePotLuckUpdate(event, food)}}>
+                    <form className="edit-consumable-form"onSubmit={(event) => {handlePotLuckUpdate(event, food)}}>
                       Edit Food: <input type='text' name='name' placeholder={food.name} onChange={handleName}/><br/>
                       Edit Person Bringing: <input type='text' name='personBringing' placeholder={food.personBringing} onChange={handlePersonBringing}/><br/>
-                      Edit Beverage Status: <input type='text' name='cuisine' onChange={handleCuisine}/><br/>
-                      <input type='submit' value='Save Changes'/>
+                      Edit Cuisine: <input type='text' placeholder={food.cuisine} name='cuisine' onChange={handleCuisine}/><br/>
+                      <input className="add" type='submit' value='Save Changes'/>
                     </form>
-                    <button onClick={(event) => {
+                    <button className="delete" onClick={(event) => {
                       handlePotLuckDelete(food)
-                    }}>Delete card</button>
+                    }}>Delete Card</button>
                   </div>
                 )
               }
@@ -254,22 +254,22 @@ const App = () => {
             <p>{item.personBringing}</p>
             <p>Bringing: {item.quantity}</p>
             <button onClick={handleItemEditor}>Edit Item</button>
-            <button onClick={(event) => {handlePotLuckDelete2(item)}}>Delete Item</button>
+            <button className="delete" onClick={(event) => {handlePotLuckDelete2(item)}}>Delete Item</button>
           </div>
           </div>
           {(() => {
             if (itemEditor === 'show') {
               return (
                 <div>
-                  <form onSubmit={(event) => {handlePotLuckUpdate2(event, item)}}>
+                  <form className="edit-item-form"onSubmit={(event) => {handlePotLuckUpdate2(event, item)}}>
                     Edit Item: <input type='text' name='name' placeholder={item.name} onChange={handleItemName}/><br/>
                     Edit Person Bringing: <input type='text' name='personBringing' placeholder={item.personBringing} onChange={handleItemPersonBringing}/><br/>
                     Edit Quantity: <input type='text' name='quantity' placeholder={item.quantity} onChange={handleItemQuantity}/><br/>
-                    <input type='submit' value='Save Changes'/>
+                    <input className="add" type='submit' value='Save Changes'/>
                   </form>
-                  <button onClick={(event) => {
+                  <button className="delete" onClick={(event) => {
                     handlePotLuckDelete2(item)
-                  }}>Delete card</button>
+                  }}>Delete Card</button>
                 </div>
               )
             }
@@ -287,7 +287,7 @@ const App = () => {
                 Name: <input type='text' placeholder="What is being brought?" onChange={handleName}/><br/>
                 Person Bringing: <input type='text' placeholder="Who is bringing it?" onChange={handlePersonBringing}/><br/>
                 Cuisine: <input type='text' placeholder="What type of cuisine?" onChange={handleCuisine}/><br/>
-                <input type='submit' value='Add Food'/>
+                <input className="add" type='submit' value='Add Food'/>
               </form>
             </div>
           </>
@@ -304,7 +304,7 @@ const App = () => {
                 Name: <input type='text' placeholder="What item?" onChange={handleItemName}/><br/>
                 Person Bringing: <input type='text' placeholder="Who is bringing the items?" onChange={handleItemPersonBringing}/><br/>
                 Quantity: <input type='text' placeholder="How many items?" onChange={handleItemQuantity}/><br/>
-                <input type='submit' value='Add Item'/>
+                <input className="add" type='submit' value='Add Item'/>
               </form>
             </div>
           </>
