@@ -8,6 +8,7 @@ const App = () => {
   //Making a usestate for the 'page' we're viewing. the return statement will have a bunch of if/else ifs that will determine what page we're on. when a button is clicked, it will set this usestate to something such as 'index', or 'show', for example.
   const [view, setView] = useState('index')
   const [editor, setEditor] = useState('none')
+  const [itemEditor, setItemEditor] = useState('none')
 
   const [newFoodName, setNewFoodName] = useState('')
   const [newBev, setNewBev] = useState(false)
@@ -36,17 +37,29 @@ const App = () => {
   const handleViewHome = () => {
     setView('index')
     setEditor('none')
+    setItemEditor('none')
   }
   const handleViewShowItems = () => {
     setView('show')
     setEditor('none')
+    setItemEditor('none')
   }
   const handleViewAddItems = () => {
     setView('add')
     setEditor('none')
+    setItemEditor('none')
   }
   const handleEditor = () => {
     setEditor('show')
+    setItemEditor('none')
+  }
+  const handleItemEditor = () => {
+    setItemEditor('show')
+    setEditor('none')
+  }
+  const handleViewAddItems2 = () => {
+    setView('additem')
+    setEditor('none')
   }
   const handleName = () => {
     setNewFoodName(window.event.target.value)
@@ -56,6 +69,15 @@ const App = () => {
   }
   const handleBeverage = () => {
     setNewBev(window.event.target.checked)
+  }
+  const handleItemName = () => {
+    setNewItemName(window.event.target.value)
+  }
+  const handleItemPersonBringing = () => {
+    setNewItemPersonBringing(window.event.target.value)
+  }
+  const handleItemQuantity = () => {
+    setNewItemQuantity(window.event.target.value)
   }
   const handlePotLuckSubmit = (event) => {
     event.preventDefault()
@@ -71,6 +93,7 @@ const App = () => {
     }).then(() => {
       setView('show')
       setEditor('none')
+      setItemEditor('none')
     })
   }
   const handlePotLuckDelete = (potLuckData) => {
@@ -96,6 +119,51 @@ const App = () => {
     }).then(() => {
       setView('show')
       setEditor('none')
+      setItemEditor('none')
+    })
+  }
+  const handlePotLuckSubmit2 = (event) => {
+    event.preventDefault()
+    axios.post('https://project3backend12.herokuapp.com/item',
+      {
+        name: newItemName,
+        personBringing: newItemPersonBringing,
+        quantity: newItemQuantity
+    }).then(() => {
+      axios.get('https://project3backend12.herokuapp.com/item').then((response) => {
+        setItem(response.data)
+      })
+    }).then(() => {
+      setView('show')
+      setEditor('none')
+      setItemEditor('none')
+    })
+  }
+  const handlePotLuckDelete2 = (potLuckData) => {
+    axios.delete(`https://project3backend12.herokuapp.com/item/${potLuckData._id}`).then(() => {
+      axios.get('https://project3backend12.herokuapp.com/item').then((response) => {
+        setItem(response.data)
+      })
+    }).then(() => {
+      setView('show')
+      setEditor('none')
+      setItemEditor('none')
+    })
+  }
+  const handlePotLuckUpdate2 = (event, potLuckData) => {
+    event.preventDefault()
+    axios.put(`https://project3backend12.herokuapp.com/item/${potLuckData._id}`, {
+      name: newItemName,
+      personBringing: newItemPersonBringing,
+      quantity: newItemQuantity
+    }).then(() => {
+      axios.get('https://project3backend12.herokuapp.com/item').then((response) => {
+        setItem(response.data)
+      })
+    }).then(() => {
+      setView('show')
+      setEditor('none')
+      setItemEditor('none')
     })
   }
 
@@ -106,8 +174,15 @@ const App = () => {
         <nav>
           <button onClick={handleViewHome}>Home</button>
           <button onClick={handleViewShowItems}>Show Potluck</button>
-          <button onClick={handleViewAddItems}>Add Food</button>
-        <input placeholder = 'Search by Person Bringing' onChange = {(event) => {setQuery(event.target.value)}}/>
+          <button onClick={handleViewAddItems}>Add Consumable</button>
+          <button onClick={handleViewAddItems2}>Add Implement</button>
+          {(() => {
+            if (view === 'show') {
+              return (
+                <input placeholder = 'Search by Person Bringing' onChange = {(event) => {setQuery(event.target.value)}}/>
+              )
+            }
+          })()}
         </nav>
       </header>
       {(() => {
@@ -116,12 +191,13 @@ const App = () => {
           <>
             <div>
               <h1>Welcome to the potluck!</h1>
+              <p>This is a page where you can plan out a group potluck and determine who is bringing what.</p>
             </div>
           </>
         )
       }
       })()}
-      {view === 'show' ? <h2>Consumables</h2> : null}
+      {view === 'show' ? <h2>Consumables:</h2> : null}
       {food.filter(food => {
         if (query === ''){
           return food
@@ -137,31 +213,31 @@ const App = () => {
               <h3>{food.name}</h3>
               <p>{food.personBringing}</p>
               {food.beverage === true ? <p>Drink</p> : null}
-              <button onClick={handleEditor}>Edit</button>
-              <button onClick={(event) => {handlePotLuckDelete(food)}}>Delete</button>
+              <button onClick={handleEditor}>Edit Consumable</button>
+              <button onClick={(event) => {handlePotLuckDelete(food)}}>Delete Consumable</button>
             </div>
             </div>
             {(() => {
               if (editor === 'show') {
                 return (
-            <div>
-              <form onSubmit={(event) => {handlePotLuckUpdate(event, food)}}>
-                Edit Food: <input type='text' name='name' placeholder={food.name} onChange={handleName}/><br/>
-                Edit Person Bringing: <input type='text' name='personBringing' placeholder={food.personBringing} onChange={handlePersonBringing}/><br/>
-                Edit Beverage Status: <input type='checkbox' name='beverage' onChange={handleBeverage}/><br/>
-                <input type='submit' value='Save Changes'/>
-              </form>
-              <button onClick={(event) => {
-                handlePotLuckDelete(food)
-              }}>Delete card</button>
-            </div>
-          )
-        }
+                  <div>
+                    <form onSubmit={(event) => {handlePotLuckUpdate(event, food)}}>
+                      Edit Food: <input type='text' name='name' placeholder={food.name} onChange={handleName}/><br/>
+                      Edit Person Bringing: <input type='text' name='personBringing' placeholder={food.personBringing} onChange={handlePersonBringing}/><br/>
+                      Edit Beverage Status: <input type='checkbox' name='beverage' onChange={handleBeverage}/><br/>
+                      <input type='submit' value='Save Changes'/>
+                    </form>
+                    <button onClick={(event) => {
+                      handlePotLuckDelete(food)
+                    }}>Delete card</button>
+                  </div>
+                )
+              }
             })()}
             </>
         )}
       })}
-        {view === 'show' ? <h2>Implements</h2> : null}
+        {view === 'show' ? <h2>Implements:</h2> : null}
       {item.filter(item => {
         if (query === ''){
           return item
@@ -176,9 +252,28 @@ const App = () => {
           <div className = 'card'>
             <h3>{item.name}</h3>
             <p>{item.personBringing}</p>
-            <button onClick={handleEditor}>Edit Item</button>
+            <p>Bringing: {item.quantity}</p>
+            <button onClick={handleItemEditor}>Edit Item</button>
+            <button onClick={(event) => {handlePotLuckDelete2(item)}}>Delete Item</button>
           </div>
           </div>
+          {(() => {
+            if (itemEditor === 'show') {
+              return (
+                <div>
+                  <form onSubmit={(event) => {handlePotLuckUpdate2(event, item)}}>
+                    Edit Item: <input type='text' name='name' placeholder={item.name} onChange={handleItemName}/><br/>
+                    Edit Person Bringing: <input type='text' name='personBringing' placeholder={item.personBringing} onChange={handleItemPersonBringing}/><br/>
+                    Edit Quantity: <input type='text' name='quantity' placeholder={item.quantity} onChange={handleItemQuantity}/><br/>
+                    <input type='submit' value='Save Changes'/>
+                  </form>
+                  <button onClick={(event) => {
+                    handlePotLuckDelete2(item)
+                  }}>Delete card</button>
+                </div>
+              )
+            }
+          })()}
           </>
       )}
       })}
@@ -186,12 +281,30 @@ const App = () => {
       if (view === 'add') {
         return (
           <>
+            <h1>Add a consumable!</h1>
             <div>
               <form onSubmit={handlePotLuckSubmit}>
                 Name: <input type='text' onChange={handleName}/><br/>
                 Person Bringing: <input type='text' onChange={handlePersonBringing}/><br/>
                 Beverage Status: <input type='checkbox' onChange={handleBeverage}/><br/>
                 <input type='submit' value='Add Food'/>
+              </form>
+            </div>
+          </>
+        )
+      }
+    })()}
+      {(() => {
+      if (view === 'additem') {
+        return (
+          <>
+            <h1>Add an implement!</h1>
+            <div>
+              <form onSubmit={handlePotLuckSubmit2}>
+                Name: <input type='text' onChange={handleItemName}/><br/>
+                Person Bringing: <input type='text' onChange={handleItemPersonBringing}/><br/>
+                Quantity: <input type='text' onChange={handleItemQuantity}/><br/>
+                <input type='submit' value='Add Item'/>
               </form>
             </div>
           </>
