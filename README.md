@@ -1,3 +1,8 @@
-Jordan Bank edited this
+Technologies Used:
 
-On Friday I spent all day breaking stuff. Hope to fix it Saturday.
+React
+MongoDB
+
+Struggles:
+
+Had trouble breaking this up into components - doing so broke the search bar and broke some of the anonymous functions needed to make our app run. Also, our edit works, but is a little wonky with two models.
