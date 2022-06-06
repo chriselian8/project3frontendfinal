@@ -78,3 +78,21 @@ input {
   margin: 20px;
   width: 40%
 }
+.add-item-form {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+.add-item-form input {
+  text-align: center;
+}
+.add-consumable-form {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+.add-consumable-form input {
+  text-align: center;
+}

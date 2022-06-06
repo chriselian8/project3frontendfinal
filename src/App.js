@@ -11,7 +11,7 @@ const App = () => {
   const [itemEditor, setItemEditor] = useState('none')
 
   const [newFoodName, setNewFoodName] = useState('')
-  const [newBev, setNewBev] = useState(false)
+  const [newCuisine, setNewCuisine] = useState('')
   const [newPersonBringing, setNewPersonBringing] = useState('')
 
   const [newItemName, setNewItemName] = useState('')
@@ -67,8 +67,8 @@ const App = () => {
   const handlePersonBringing = () => {
     setNewPersonBringing(window.event.target.value)
   }
-  const handleBeverage = () => {
-    setNewBev(window.event.target.checked)
+  const handleCuisine = () => {
+    setNewCuisine(window.event.target.value)
   }
   const handleItemName = () => {
     setNewItemName(window.event.target.value)
@@ -84,7 +84,7 @@ const App = () => {
     axios.post('https://project3backend12.herokuapp.com/food',
       {
         name: newFoodName,
-        beverage: newBev,
+        cuisine: newCuisine,
         personBringing: newPersonBringing
     }).then(() => {
       axios.get('https://project3backend12.herokuapp.com/food').then((response) => {
@@ -110,7 +110,7 @@ const App = () => {
     event.preventDefault()
     axios.put(`https://project3backend12.herokuapp.com/food/${potLuckData._id}`, {
       name: newFoodName,
-      beverage: newBev,
+      cuisine: newCuisine,
       personBringing: newPersonBringing
     }).then(() => {
       axios.get('https://project3backend12.herokuapp.com/food').then((response) => {
@@ -189,7 +189,7 @@ const App = () => {
       if (view === 'index') {
         return (
           <>
-            <div>
+            <div className="main-page">
               <h1>Welcome to the potluck!</h1>
               <p>This is a page where you can plan out a group potluck and determine who is bringing what.</p>
             </div>
@@ -224,7 +224,7 @@ const App = () => {
                     <form onSubmit={(event) => {handlePotLuckUpdate(event, food)}}>
                       Edit Food: <input type='text' name='name' placeholder={food.name} onChange={handleName}/><br/>
                       Edit Person Bringing: <input type='text' name='personBringing' placeholder={food.personBringing} onChange={handlePersonBringing}/><br/>
-                      Edit Beverage Status: <input type='checkbox' name='beverage' onChange={handleBeverage}/><br/>
+                      Edit Beverage Status: <input type='text' name='cuisine' onChange={handleCuisine}/><br/>
                       <input type='submit' value='Save Changes'/>
                     </form>
                     <button onClick={(event) => {
@@ -282,11 +282,11 @@ const App = () => {
         return (
           <>
             <h1>Add a consumable!</h1>
-            <div>
-              <form onSubmit={handlePotLuckSubmit}>
-                Name: <input type='text' onChange={handleName}/><br/>
-                Person Bringing: <input type='text' onChange={handlePersonBringing}/><br/>
-                Beverage Status: <input type='checkbox' onChange={handleBeverage}/><br/>
+            <div className="add-consumable-card">
+              <form className="add-consumable-form" onSubmit={handlePotLuckSubmit}>
+                Name: <input type='text' placeholder="What is being brought?" onChange={handleName}/><br/>
+                Person Bringing: <input type='text' placeholder="Who is bringing it?" onChange={handlePersonBringing}/><br/>
+                Cuisine: <input type='text' placeholder="What type of cuisine?" onChange={handleCuisine}/><br/>
                 <input type='submit' value='Add Food'/>
               </form>
             </div>
@@ -299,11 +299,11 @@ const App = () => {
         return (
           <>
             <h1>Add an implement!</h1>
-            <div>
-              <form onSubmit={handlePotLuckSubmit2}>
-                Name: <input type='text' onChange={handleItemName}/><br/>
-                Person Bringing: <input type='text' onChange={handleItemPersonBringing}/><br/>
-                Quantity: <input type='text' onChange={handleItemQuantity}/><br/>
+            <div className="add-item-card">
+              <form className="add-item-form"onSubmit={handlePotLuckSubmit2}>
+                Name: <input type='text' placeholder="What item?" onChange={handleItemName}/><br/>
+                Person Bringing: <input type='text' placeholder="Who is bringing the items?" onChange={handleItemPersonBringing}/><br/>
+                Quantity: <input type='text' placeholder="How many items?" onChange={handleItemQuantity}/><br/>
                 <input type='submit' value='Add Item'/>
               </form>
             </div>
